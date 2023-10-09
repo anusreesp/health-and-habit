@@ -1,10 +1,11 @@
-import 'package:animate_you/authenticate/login.dart';
+import 'package:animate_you/authenticate/presentation/screens/login.dart';
 import 'package:animate_you/features/home_page.dart';
 import 'package:animate_you/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const route = '/splashscreen';
   const SplashScreen({super.key});
 
   @override

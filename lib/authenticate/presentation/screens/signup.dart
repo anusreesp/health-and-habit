@@ -1,6 +1,9 @@
-import 'package:animate_you/authenticate/login.dart';
+import 'dart:ui';
+
+import 'package:animate_you/authenticate/presentation/screens/login.dart';
 import 'package:animate_you/common/normal_textfield.dart';
 import 'package:animate_you/common/oval_text_button.dart';
+import 'package:animate_you/common/validator.dart';
 import 'package:animate_you/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animations/animation_mixin/animation_mixin.dart';
@@ -20,7 +23,8 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  late Animation<double> size;
+  final _formKeySignUp = GlobalKey<FormState>();
+
   AnimationController? _controller;
   Animation<double>? animatedFade;
   Animation<double>? animatedBlur;
@@ -29,9 +33,9 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
   @override
   void initState() {
     super.initState();
-    size = Tween(begin: 0.0, end: 200.0).animate(controller);
+
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500));
+        vsync: this, duration: const Duration(milliseconds: 1500));
 
     animatedFade = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
       parent: _controller!,
@@ -49,7 +53,6 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller?.dispose();
     super.dispose();
   }
@@ -60,8 +63,12 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
         body: AnimatedBuilder(
             animation: animatedBlur!,
             builder: (BuildContext context, Widget? child) {
-              return Stack(
-                children: [bgColor(), buildBody()],
+              return BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: animatedBlur!.value, sigmaY: animatedBlur!.value),
+                child: Stack(
+                  children: [bgColor(), buildBody()],
+                ),
               );
             }));
   }
@@ -154,23 +161,50 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
                                         blurRadius: 20,
                                         offset: Offset(0, 8)),
                                   ]),
-                              child: Column(
-                                children: [
-                                  NormalTextField(
+                              child: Form(
+                                key: _formKeySignUp,
+                                child: Column(
+                                  children: [
+                                    NormalTextField(
                                       controller: nameController,
-                                      hintText: 'Full name'),
-                                  NormalTextField(
+                                      hintText: 'Full name',
+                                      validator: MultiValidator([
+                                        MinLengthValidator(6,
+                                            errorText: 'Name is too short'),
+                                        NonNumberValidator(
+                                            errorText:
+                                                'Numeric values are not allowed')
+                                      ]),
+                                    ),
+                                    NormalTextField(
                                       controller: emailController,
-                                      hintText: 'Email'),
-                                  NormalTextField(
+                                      hintText: 'Email',
+                                      validator: EmailTextValidator(
+                                          errorText: 'Enter a valid email'),
+                                    ),
+                                    NormalTextField(
                                       controller: newPasswordController,
                                       isObscureText: true,
-                                      hintText: 'New password'),
-                                  NormalTextField(
-                                      controller: confirmPasswordController,
-                                      isObscureText: true,
-                                      hintText: 'Confirm password'),
-                                ],
+                                      hintText: 'New password',
+                                      validator: MinLengthValidator(8,
+                                          errorText: 'Password is too short'),
+                                    ),
+                                    NormalTextField(
+                                        controller: confirmPasswordController,
+                                        isObscureText: true,
+                                        hintText: 'Confirm password',
+                                        validator: (val) {
+                                          if (val == null || val.isEmpty) {
+                                            return 'Password is too short';
+                                          }
+                                          if (val !=
+                                              newPasswordController.text) {
+                                            return 'Password does not match';
+                                          }
+                                          return null;
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -182,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
                     const SizedBox(
                       height: 34,
                     ),
-                 const   Text(
+                    const Text(
                       'Continue with Social Media',
                       style: TextStyle(color: AppTheme.darkGrey1Color),
                     ),
@@ -238,7 +272,9 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginScreen()));
+                                    builder: (context) => LoginScreen()
+                                    // SignUpScreen()
+                                    ));
 
                             // Navigator.pushNamed(
                             //   context, SignUpScreen.route,
