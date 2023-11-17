@@ -4,6 +4,7 @@ import 'package:animate_you/authenticate/presentation/screens/login.dart';
 import 'package:animate_you/common/normal_textfield.dart';
 import 'package:animate_you/common/oval_text_button.dart';
 import 'package:animate_you/common/validator.dart';
+import 'package:animate_you/features/bmi_calculator/presentation/screens/bmi_calculator.dart';
 import 'package:animate_you/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_animations/animation_mixin/animation_mixin.dart';
@@ -212,7 +213,17 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
                     const SizedBox(
                       height: 25,
                     ),
-                    OvalTextButton(height: 50, onTap: () {}, title: 'Sign Up'),
+                    OvalTextButton(
+                        height: 50,
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BMICalculator()
+                                  // SignUpScreen()
+                                  ));
+                        },
+                        title: 'Sign Up'),
                     const SizedBox(
                       height: 34,
                     ),
@@ -272,7 +283,7 @@ class _SignUpScreenState extends State<SignUpScreen> with AnimationMixin {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginScreen()
+                                    builder: (context) => BMICalculator()
                                     // SignUpScreen()
                                     ));
 

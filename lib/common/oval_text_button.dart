@@ -10,7 +10,8 @@ class OvalTextButton extends StatelessWidget {
   final TextStyle textStyle;
   const OvalTextButton({
     super.key,
-    required this.onTap,
+    required this.
+    onTap,
     required this.title,
     this.height,
     this.width,

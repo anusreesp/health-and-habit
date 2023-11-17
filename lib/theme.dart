@@ -15,6 +15,7 @@ class AppTheme {
   static const darkGrey1Color = Color.fromARGB(255, 133, 139, 145);
   static const darkGrey2Color = Color(0xff525961);
   static const darkBlue1Color = Color(0xff0B1524);
+  static const darkBlue2Color = Color.fromARGB(255, 18, 39, 71);
 
   static const facebookColor = Colors.blue;
 
@@ -29,10 +30,23 @@ class AppTheme {
   }
 }
 
+const TextStyle man20Blue = TextStyle(
+  fontFamily: manrope,
+  fontSize: 20,
+  fontWeight: FontWeight.w900,
+  color: AppTheme.darkBlue2Color,
+);
 const TextStyle man32White = TextStyle(
   fontFamily: manrope,
   fontSize: 32,
   fontWeight: FontWeight.bold,
+  color: AppTheme.whiteColor,
+);
+
+const TextStyle man26White = TextStyle(
+  fontFamily: manrope,
+  fontSize: 26,
+  fontWeight: FontWeight.w700,
   color: AppTheme.whiteColor,
 );
 
